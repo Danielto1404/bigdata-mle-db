@@ -1,0 +1,5 @@
+[core]
+    remote = vkcloud
+['remote "vkcloud"']
+    url = s3://twitter-sentiment-analysis
+    acl = bucket-owner-full-control
