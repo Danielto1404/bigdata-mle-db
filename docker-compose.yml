@@ -2,7 +2,7 @@ version: "3.9"
 services:
    twitter-sentiment:
        build: .
-       command: bash -c "python src/train.py --exp_name=tfidf_logreg && coverage run src/unit_tests/test_preprocess.py && coverage run -a src/unit_tests/test_training.py && coverage report -m"
+       command: bash -c "python src/train.py --exp_name=tfidf_logreg && python src/test.py && coverage run src/unit_tests/test_preprocess.py && coverage run -a src/unit_tests/test_training.py && coverage report -m"
        ports:
            - "8000:8000"
        image: danielto1404/ml-pipe-twitter-sentiment:latest
