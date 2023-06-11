@@ -1,9 +1,7 @@
 import argparse
 import configparser
 import logging
-import os
 
-import dotenv
 import numpy as np
 import pandas as pd
 
@@ -13,14 +11,18 @@ from train import TweetsClassificationTrainer
 config = configparser.ConfigParser()
 config.read("config.ini")
 
-dotenv.load_dotenv()
-
 
 def main():
     logging.info("Launching functional test")
     parser = argparse.ArgumentParser("Twitter sentiment testing")
     parser.add_argument("--data", default="tests/samples.csv")
     parser.add_argument("--model", default="experiments/tfidf_logreg/model.pkl")
+    parser.add_argument("--db-user")
+    parser.add_argument("--db-password")
+    parser.add_argument("--db-name")
+    parser.add_argument("--db-host", default=db_tools.POSTGRES_HOST)
+    parser.add_argument("--db-port", default=db_tools.POSTGRES_PORT)
+
     args = parser.parse_args()
 
     trainer = TweetsClassificationTrainer.from_pretrained(args.model)
@@ -34,11 +36,11 @@ def main():
         logging.info("Functional test: Passed")
 
     params = dict(
-        user=os.getenv("POSTGRES_USER"),
-        password=os.getenv("POSTGRES_PASSWORD"),
-        dbname=os.getenv("POSTGRES_DBNAME"),
-        host=db_tools.POSTGRES_HOST,
-        port=db_tools.POSTGRES_PORT
+        user=args.db_user,
+        password=args.db_password,
+        host=args.db_host,
+        port=args.db_port,
+        dbname=args.db_name
     )
 
     db = db_tools.get_db(**params)

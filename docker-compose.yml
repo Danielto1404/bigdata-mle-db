@@ -2,7 +2,11 @@ version: "3.9"
 services:
   twitter-sentiment:
     build: .
-    command: bash -c "python src/train.py --exp_name=tfidf_logreg && python src/test.py && coverage run src/unit_tests/test_preprocess.py && coverage run -a src/unit_tests/test_training.py && coverage report -m"
+    command: bash -c "python src/train.py --exp_name=tfidf_logreg
+      && python src/test.py --db-user=${POSTGRES_USER} --db-password=${POSTGRES_PASSWORD} --db-name=${POSTGRES_DBNAME}
+      && coverage run src/unit_tests/test_preprocess.py
+      && coverage run -a src/unit_tests/test_training.py
+      && coverage report -m"
     ports:
       - "8000:8000"
     image: danielto1404/ml-pipe-twitter-sentiment:latest
@@ -25,6 +29,6 @@ services:
       - POSTGRES_DB=${POSTGRES_DBNAME}
     restart: always
     healthcheck:
-      test: [ "CMD", "pg_isready", "-U", "${POSTGRES_USER}", "-d", "${POSTGRES_DBNAME}", "-h", "${POSTGRES_HOST}" ]
+      test: [ "CMD", "pg_isready", "-U", "${POSTGRES_USER}", "-d", "${POSTGRES_DBNAME}" ]
       timeout: 20s
       retries: 5
