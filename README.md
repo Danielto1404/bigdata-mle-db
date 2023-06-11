@@ -36,6 +36,7 @@ ___
 6. Created CI / CD pipelines using GitHub Actions:
     * [CI](./.github/workflows/ci.yaml)
     * [CD](./.github/workflows/cd.yaml)
+7. Added logging with [Greenplum](https://greenplum.org/) database during functional testing
 
 ___
 
